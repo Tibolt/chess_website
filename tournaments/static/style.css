@@ -1,0 +1,133 @@
+:root {
+  --clr-accent-400: #AC3B61;
+  --clr-accent-100: #BAB2B5;
+
+  --clr-primary-400: #EDC7B7;
+
+  --clr-neutral-100: #EEE2DC;
+  --clr-neutral-900: #123C69;
+}
+
+/* modern css reset: https://piccalil.li/blog/a-modern-css-reset/ */
+/* box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* remove default margin */
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+
+/* remove list styles on ul */
+ul[role="list"] {
+  list-style: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+
+body {
+	background-color: var(--clr-neutral-100);
+	color: var(--clr-neutral-900);
+}
+
+li, a, button {
+    text-decoration: none; 
+    color: var(--clr-neutral-900);
+}
+
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10%;
+	background-color: var(--clr-primary-400);
+	filter: drop-shadow(0 5px 10px var(--clr-accent-100));
+}
+
+.nav-links {
+	list-style: none;
+}
+
+.nav-links li {
+    display: inline-block;
+    padding: 0px 10px;
+}
+
+.toggle-button {
+	position: absolute;
+	top: .75rem;
+	right: 1rem;
+	display: none;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 50px;
+	height: 30px;
+}
+
+.toggle-button .bar {
+	height: 3px;
+	width: 100%;
+	background-color: white;
+	border-radius: 10px;
+}
+
+@media (max-width: 400px){
+	.toggle-button {display: flex;}
+	/* .nav-links {display: none;} */
+	nav {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.nav-links {
+		flex-direction: column;
+		width: 100%;
+	}
+	.nav-links li {
+		text-align: center;
+	}
+	
+}
+
+button {
+    padding: 10px 15px;
+    margin: 0 10px;
+    background-color: rgba(172, 59, 97,1);
+    color: var(--clr-neutral-100);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+}
+
+button:hover {
+    background-color: rgba(172, 59, 97,0.5);
+}
+
+
+footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background-color: var(--clr-primary-400);
+	text-align: center;
+}
+
+.grid-container {
+	display: grid;
+	/* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
+	grid-template-columns: auto auto;
+	gap: 30px;
+	padding: 50px 190px;
+	text-align: center;
+}
