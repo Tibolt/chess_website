@@ -10,20 +10,22 @@
 </head>
 
 <body>
-	<nav>
-		<img src="" alt="logo">
-		<a href="#" class="toggle-button">
-			<span class="bar"></span>
-			<span class="bar"></span>
-			<span class="bar"></span>
-		</a>
-		<ul class="nav-links">
-			<li><a href="#">HOME</a></li>
-			<li><a href="#">CREATE</a></li>
-			<li><a href="#">SHOW</a></li>
-			<li><button href="#">LOGIN</button></li>
-		</ul>
-	</nav>
+	<header>
+		<!-- <img src="" alt="Logo"> -->
+		<h1 class="logo">Logo</h1>
+		<input type="checkbox" class="nav-toggle" id="nav-toggle">
+		<nav>
+			<ul>
+				<li><a href="#">HOME</a></li>
+				<li><a href="#">CREATE</a></li>
+				<li><a href="#">SHOW</a></li>
+			</ul>
+				<button href="#">LOGIN</button>
+		</nav>
+		<label for="nav-toggle" class="nav-toggle-label">
+			<span></span>
+		</label>
+	</header>
 	{% block content %}
 	{% endblock content %}
 	<footer>
