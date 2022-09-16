@@ -190,7 +190,7 @@ nav a:hover {
 	nav button {
 		opacity: 1;
 		margin-left: 3em;
-		margin-bottom: 0;
+		margin-bottom: -4px;
 	}
 
 	nav a::before {
@@ -207,8 +207,6 @@ nav a:hover {
 	nav a:hover::before {
 		transform: scale(1,1);
 	}
-
-	
 }
 
 button {
@@ -225,7 +223,6 @@ button:hover {
     background-color: rgba(172, 59, 97,0.5);
 }
 
-
 footer {
 	position: fixed;
 	left: 0;
@@ -234,6 +231,14 @@ footer {
 	background-color: var(--clr-primary-400);
 	text-align: center;
 }
+
+section {
+	display: grid;
+	place-items: center;
+	align-content: center;
+	min-height: 100vh;
+}
+
 
 .grid-container {
 	display: grid;
