@@ -82,8 +82,9 @@ WSGI_APPLICATION = 'chess_website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'website',
         'USER': 'postgres',
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'PASSWORD': config('POSTGRES_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '5432',
     }
