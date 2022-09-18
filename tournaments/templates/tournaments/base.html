@@ -16,8 +16,8 @@
 		<input type="checkbox" class="nav-toggle" id="nav-toggle">
 		<nav>
 			<ul>
-				<li><a href="#">HOME</a></li>
-				<li><a href="#">CREATE</a></li>
+				<li><a href="{% url 'tournaments:index' %}">HOME</a></li>
+				<li><a href="{% url 'tournaments:brackets' %}">BRACKETS</a></li>
 				<li><a href="#">SHOW</a></li>
 			</ul>
 				<button href="#">LOGIN</button>
@@ -26,6 +26,7 @@
 			<span></span>
 		</label>
 	</header>
+	<div class="spacer"></div>
 	{% block content %}
 
 	{% endblock content %}

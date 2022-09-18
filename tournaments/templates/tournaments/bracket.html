@@ -1,0 +1,34 @@
+{% extends 'tournaments/base.html' %}
+{% block content %}
+
+<section>
+	<table>
+		<thead>
+			<tr>
+				<th>Player 1</th>
+				<th>P1 Rating</th>
+				<th>P1 Score</th>
+				<th></th>
+				<th>P2 Score</th>
+				<th>P2 Rating</th>
+				<th>Player 2</th>
+			</tr>
+		</thead>
+		<tbody 
+			{% if players %}
+				{% for player in players %}
+					<tr>
+						<th scope="row"> {{player.name}}</th>
+						<td> {{player.rating}}</td>
+						<td> {{player.score}}</td>
+						<td></td>
+					</tr>
+				{% endfor %}
+			{% else %}
+				<p>Empty</p>
+			{% endif %}
+		</tbody>
+	</table>
+</section>
+
+{% endblock content %}

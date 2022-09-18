@@ -219,7 +219,23 @@ button {
     transition: all 0.3s ease 0s;
 }
 
+
+
 button:hover {
+    background-color: rgba(172, 59, 97,0.5);
+}
+
+.button {
+	padding: 6px 10px;
+	background-color: rgba(172, 59, 97,1);
+	color: var(--clr-neutral-100);
+	border: none;
+	border-radius: 30px;
+	cursor: pointer;
+	transition: all 0.3s ease 0s;
+}
+
+.button:hover {
     background-color: rgba(172, 59, 97,0.5);
 }
 
@@ -248,3 +264,48 @@ section {
 	padding: 50px 190px;
 	text-align: center;
 }
+
+.center {
+	display: grid;
+	place-items: center;
+	align-content: center;
+	margin-top: 5vh;
+}
+
+.spacer {
+	padding-top: 51px;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+td {
+	padding: 10px 10px;
+}
+
+form {
+	display: grid;
+	place-items: center;
+	align-content: center;
+	margin-top: -10vh;
+}
+
+form p label, input {
+	display: flex;
+	flex-direction:column;
+}
+
+form p label {
+	text-align:center;
+	line-height: 150%;
+}
+
+.btn-form {
+	margin-top: 2vh;
+}
+
+.form-element {
+	width: 100%
+}
+
+

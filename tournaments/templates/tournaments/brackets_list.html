@@ -1,0 +1,32 @@
+{% extends 'tournaments/base.html' %}
+{% block content %}
+
+<section>
+	<table>
+		<thead>
+			<tr>
+				<th>Tournament Name</th>
+				<th>Number Of Players</th>
+				<th>Date</th>
+				<th>Options</th>
+			</tr>
+		</thead>
+		<tbody> 
+			{% if brackets %}
+				{% for bracket in brackets %}
+					<tr>
+						<th scope="row"> {{bracket.name}}</th>
+						<td> {{bracket.size}}</td>
+						<td> {{bracket.date}}</td>
+						<td><a  class="button" href="{% url 'tournaments:bracket' id=bracket.id %}">Edit</a></td>
+					</tr>
+				{% endfor %}
+			{% else %}
+				<p>Empty</p>
+			{% endif %}
+		</tbody>
+	</table>
+	<a  class="button btn-form" href="{% url 'tournaments:add_bracket' %}">Add</a>
+</section>
+
+{% endblock content %}
