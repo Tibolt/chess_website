@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 
 from .models import Bracket, Player
+from .forms import BracketForm
 # Create your views here.
 
 
@@ -23,3 +24,17 @@ def bracket(response, id):
     }
     return render(response, 'tournaments/bracket.html', context)
 
+
+def add_bracket(response):
+    submitted = False
+    if response.method == 'POST':
+        form = BracketForm(response.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/brackets/add?submitted=True')
+    else:
+        form = BracketForm
+        if 'submitted' in response.GET:
+            submitted = True
+    context = {'form': form, 'submitted': submitted}
+    return render(response, 'tournaments/add_bracket.html', context)
