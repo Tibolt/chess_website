@@ -219,7 +219,23 @@ button {
     transition: all 0.3s ease 0s;
 }
 
+
+
 button:hover {
+    background-color: rgba(172, 59, 97,0.5);
+}
+
+.button {
+	padding: 6px 10px;
+	background-color: rgba(172, 59, 97,1);
+	color: var(--clr-neutral-100);
+	border: none;
+	border-radius: 30px;
+	cursor: pointer;
+	transition: all 0.3s ease 0s;
+}
+
+.button:hover {
     background-color: rgba(172, 59, 97,0.5);
 }
 
@@ -247,4 +263,11 @@ section {
 	gap: 30px;
 	padding: 50px 190px;
 	text-align: center;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+td {
+	padding: 10px 10px;
 }
