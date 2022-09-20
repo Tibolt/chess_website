@@ -61,6 +61,10 @@ header {
 	font-weight: 600;
 }
 
+.text-nav {
+  width: min(100% - 100px, 2000px);
+  margin-inline: auto;
+}
 
 nav {
 	position: absolute;
@@ -68,11 +72,12 @@ nav {
 	top: 100%;
 	left: 0;
 	background: var(--clr-primary-400);
-	width: 100%;
 	transform: scale(1, 0);
 	transform-origin: top;
 	transition: transform 300ms ease-in-out;
 }
+
+
 
 nav ul {
 	margin: 0;
@@ -209,6 +214,8 @@ nav a:hover {
 	}
 }
 
+/*  UI  */
+
 button {
     padding: 6px 10px;
     background-color: rgba(172, 59, 97,1);
@@ -255,6 +262,16 @@ section {
 	min-height: 100vh;
 }
 
+.text {
+  width: min(100% - 100px, 1800px);
+  margin-inline: auto;
+}
+
+.inline-section {
+	display: flex;
+	justify-content: center;
+}
+
 
 .grid-container {
 	display: grid;
@@ -262,6 +279,12 @@ section {
 	grid-template-columns: auto auto;
 	gap: 30px;
 	padding: 50px 190px;
+	text-align: center;
+}
+
+.inline-container {
+	display: flex;
+	padding-top: 20px;
 	text-align: center;
 }
 
@@ -276,28 +299,42 @@ section {
 	padding-top: 51px;
 }
 
+/* TABLES  */
+
 table, th, td {
   border: 1px solid black;
 }
-td {
-	padding: 10px 10px;
+td,th {
+	padding: 10px 20px;
 }
 
-form {
+th {
+	background-color: gray;
+}
+
+/* FORMS  */
+
+.form-grid {
 	display: grid;
 	place-items: center;
 	align-content: center;
 	margin-top: -10vh;
 }
 
-form p label, input {
+.form-grid p label, input {
 	display: flex;
 	flex-direction:column;
 }
 
-form p label {
+.form-grid p label {
 	text-align:center;
 	line-height: 150%;
+}
+
+.form-grid p input {
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
 }
 
 .btn-form {
@@ -306,6 +343,61 @@ form p label {
 
 .form-element {
 	width: 100%
+}
+
+.form-inline {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.form-inline p label, input {
+	display: inline-flex;
+	flex-direction: row;
+}
+
+.form-inline p input {
+  margin: 5px 10px 5px 0;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.form-inline p label {
+	text-align:center;
+  margin: 5px 10px 5px 0;
+}
+
+.form-inline p button {
+	position: relative;
+}
+
+
+@media screen and (max-width: 600px) {
+  .form-inline input {
+    margin: 10px 0;
+  }
+
+  .form-inline {
+    flex-direction: column;
+	flex-wrap: nowrap;
+    align-items: stretch;
+  }
+
+	.form-inline p label, input {
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+.break {
+	flex-basis: 100%;
+  height: 0;
+}
+
+.break-column {
+  flex-basis: 100%;
+  width: 0;
 }
 
 

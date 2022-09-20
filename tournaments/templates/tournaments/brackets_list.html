@@ -11,22 +11,23 @@
 				<th>Options</th>
 			</tr>
 		</thead>
-		<tbody> 
+		<tbody>
 			{% if brackets %}
-				{% for bracket in brackets %}
-					<tr>
-						<th scope="row"> {{bracket.name}}</th>
-						<td> {{bracket.size}}</td>
-						<td> {{bracket.date}}</td>
-						<td><a  class="button" href="{% url 'tournaments:bracket' id=bracket.id %}">Edit</a></td>
-					</tr>
+			{% for bracket, len in brackets%}
+			<tr>
+				<td scope="row"> {{bracket.name}}</td>
+				<td> {{len}}</td>
+				<td> {{bracket.date}}</td>
+				<td><a class="button" href="{% url 'tournaments:bracket' id=bracket.id %}">Edit</a>
+				<a class="button" href="{% url 'tournaments:rounds' id=bracket.id round=0%}">Rounds</a></td>
 				{% endfor %}
+			</tr>
 			{% else %}
-				<p>Empty</p>
+			<p>Empty</p>
 			{% endif %}
 		</tbody>
 	</table>
-	<a  class="button btn-form" href="{% url 'tournaments:add_bracket' %}">Add</a>
+	<a class="button btn-form" href="{% url 'tournaments:add_bracket' %}">Add</a>
 </section>
 
 {% endblock content %}

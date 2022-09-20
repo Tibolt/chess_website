@@ -1,5 +1,4 @@
 from django.db import models
-
 # Create your models here.
 
 
@@ -21,14 +20,35 @@ class Player(models.Model):
         null=True,
         blank=True,
     )
-    score = models.PositiveIntegerField(
+    score = models.FloatField(
+        default=0,
+        null=True,
+    )
+    score_round = models.FloatField(
         default=0,
         null=True,
     )
     bracket = models.ForeignKey(
         Bracket,
+        null=True,
+        blank=True,
         on_delete=models.CASCADE,
     )  # many to one relation
 
     def __str__(self):
         return str(self.name) + " " + str(self.last_name)
+
+
+class Rounds(models.Model):
+    round = models.PositiveIntegerField()
+    player1_id = models.PositiveIntegerField(null=True, blank=True)
+    player2_id = models.PositiveIntegerField(null=True, blank=True)
+    player1_score = models.FloatField(null=True, default=0)
+    player2_score = models.FloatField(null=True, default=0)
+    bracket = models.ForeignKey(
+        Bracket,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+    )
+

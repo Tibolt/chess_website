@@ -6,9 +6,13 @@ from .models import Bracket, Player
 class BracketForm(ModelForm):
     class Meta:
         model = Bracket
-        fields = ('name', 'size', 'date')
+        fields = ('name', 'date')
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-element'}),
-            'size': forms.NumberInput(attrs={'class': 'form-element'}),
             'date': forms.DateInput(attrs={'class': 'form-element'}),
         }
+
+class PlayersForm(ModelForm):
+    class Meta:
+        model = Player
+        fields = ('name', 'last_name', 'age', 'rating', 'score')

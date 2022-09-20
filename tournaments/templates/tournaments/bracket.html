@@ -2,33 +2,36 @@
 {% block content %}
 
 <section>
+	{% if players %}
 	<table>
 		<thead>
 			<tr>
-				<th>Player 1</th>
-				<th>P1 Rating</th>
-				<th>P1 Score</th>
-				<th></th>
-				<th>P2 Score</th>
-				<th>P2 Rating</th>
-				<th>Player 2</th>
+				<th><a href="/brackets/table/{{bracket.id}}?sort=name">Name</a></th>
+				<th><a href="/brackets/table/{{bracket.id}}?sort=last_name">Last name</a></th>
+				<th><a href="/brackets/table/{{bracket.id}}?sort=age">Age</a></th>
+				<th><a href="/brackets/table/{{bracket.id}}?sort=rating">Rating</a></th>
+				<th><a href="/brackets/table/{{bracket.id}}?sort=score">Score</a></th>
 			</tr>
 		</thead>
-		<tbody 
-			{% if players %}
-				{% for player in players %}
-					<tr>
-						<th scope="row"> {{player.name}}</th>
-						<td> {{player.rating}}</td>
-						<td> {{player.score}}</td>
-						<td></td>
-					</tr>
-				{% endfor %}
+		<tbody>
+			{% for player in players %} <tr>
+				<td scope="row"> {{player.name}}</td>
+				<td> {{player.last_name}}</td>
+				<td> {{player.age}}</td>
+				<td> {{player.rating}}</td>
+				<td> {{player.score}}</td>
+			</tr>
+			{% endfor %}
 			{% else %}
-				<p>Empty</p>
-			{% endif %}
+			<p>Empty</p>
 		</tbody>
+		{% endif %}
 	</table>
+	<div class="inline-container">
+		<a class="button btn-form" href="{% url 'tournaments:add_players' id=bracket.id %}">Add</a>
+		<a class="button btn-form" href="{% url 'tournaments:edit_players' id=bracket.id %}">Edit</a>
+		<a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=0 %}">Rounds</a>
+	</div>
 </section>
 
 {% endblock content %}

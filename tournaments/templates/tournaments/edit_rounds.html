@@ -1,0 +1,60 @@
+{% extends 'tournaments/base.html' %}
+{% block content %}
+
+<section>
+  round: {{rd}}
+	<div class='inline-section'>
+		<form action="" method=POST class='form-inline'>
+			{% csrf_token %}
+			<table>
+				<thead>
+					<tr>
+						<th>Name</a></th>
+						<th>Last name</a></th>
+						<th>Age</a></th>
+						<th>Rating</a></th>
+						<th>Score</a></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for player in players1 %} <tr>
+						<td scope="row"> {{player.name}}</td>
+						<td> {{player.last_name}}</td>
+						<td> {{player.age}}</td>
+						<td> {{player.rating}}</td>
+						<td><input type="number" name="p1{{ player.id }}" {{player.score}}></td>
+						{% endfor %}
+					</tr>
+				</tbody>
+			</table>
+			<table>
+				<thead>
+					<tr>
+						<th>Score</th>
+						<th>Rating</a></th>
+						<th>Age</a></th>
+						<th>Last name</a></th>
+						<th>Name</a></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for player in players2 %} <tr>
+						<td scope="row"><input type="number" name="p2{{ player.id }}" {{player.score}}></td>
+						<td> {{player.rating}}</td>
+						<td> {{player.age}}</td>
+						<td> {{player.last_name}}</td>
+						<td> {{player.name}}</td>
+						{% endfor %}
+					</tr>
+				</tbody>
+			</table>
+			<div class="break"></div>
+			<div class="inline-container">
+				<button class="btn-form" type="submit">submit</button>
+				<a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=rd%}">back</a>
+			</div>
+		</form>
+	</div>
+</section>
+
+{% endblock content %}

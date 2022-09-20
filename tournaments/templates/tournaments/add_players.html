@@ -5,15 +5,11 @@
 	<h1>Add New Bracket</h1>
 </div>
 <section>
-	{% if submitted %}
-	<p>Your bracket was created!</p>
-	{% else %}
 	<form action="" method=POST class="form-grid">
 		{% csrf_token %}
 		{{form.as_p}}
 		<button type="submit" class="btn-form" >Sumbit</button>
 	</form>
-	{% endif %}
 </section>
 
 {% endblock content %}

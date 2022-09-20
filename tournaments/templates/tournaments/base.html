@@ -14,7 +14,7 @@
 		<!-- <img src="" alt="Logo"> -->
 		<h1 class="logo">Logo</h1>
 		<input type="checkbox" class="nav-toggle" id="nav-toggle">
-		<nav>
+		<nav class="text-nav">
 			<ul>
 				<li><a href="{% url 'tournaments:index' %}">HOME</a></li>
 				<li><a href="{% url 'tournaments:brackets' %}">BRACKETS</a></li>
@@ -27,9 +27,11 @@
 		</label>
 	</header>
 	<div class="spacer"></div>
+	<div>
 	{% block content %}
 
 	{% endblock content %}
+	</div>
 	<footer>
 		footer
 	</footer>
