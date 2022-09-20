@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
+from django.forms import inlineformset_factory
 
 from .models import Bracket, Player
 from .forms import BracketForm, PlayersForm
@@ -39,19 +40,34 @@ def add_bracket(response):
     context = {'form': form, 'submitted': submitted}
     return render(response, 'tournaments/add_bracket.html', context)
 
+
 def add_players(response, id):
-    br = Bracket.objects.get(pk=id)
-    if response.method == 'POST':
-        form = PlayersForm(response.POST, instance=br)
+    bracket = Bracket.objects.get(pk=id)
+    if response.method == "POST":
+        form = PlayersForm(response.POST)
         if form.is_valid():
-            player = form.save()
-            # link contact to activity here, activity pk is 'id'
+            player = form.save(commit=False)
+            player.bracket = bracket
+            form.save()
+            return HttpResponseRedirect('/brackets/table/' + str(id))
 
-            # player.bracket.add(br)
-
-            return HttpResponseRedirect('/brackets/table/'+str(id)+'/add')
     else:
-        form = PlayersForm
+        form = PlayersForm()
     context = {'form': form}
     return render(response, 'tournaments/add_players.html', context)
+
+
+def edit_players(response, id):
+    bracket = Bracket.objects.get(pk=id)
+    PlayerInlineFormSet = inlineformset_factory(
+        Bracket, Player, fields=['name', 'last_name', 'age', 'rating', 'score'])
+    if response.method == 'POST':
+        formset = PlayerInlineFormSet(response.POST, response.FILES, instance=bracket)
+        if formset.is_valid():
+            formset.save()
+            return HttpResponseRedirect('/brackets/table/' + str(id))
+    else:
+        formset = PlayerInlineFormSet(instance=bracket)
+    context = {'form': formset}
+    return render(response, 'tournaments/edit_players.html', context)
 

@@ -15,7 +15,7 @@
 			{% if brackets %}
 				{% for bracket in brackets %}
 					<tr>
-						<th scope="row"> {{bracket.name}}</th>
+						<td scope="row"> {{bracket.name}}</td>
 						<td> {{bracket.size}}</td>
 						<td> {{bracket.date}}</td>
 						<td><a  class="button" href="{% url 'tournaments:bracket' id=bracket.id %}">Edit</a></td>

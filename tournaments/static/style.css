@@ -209,6 +209,8 @@ nav a:hover {
 	}
 }
 
+/*  UI  */
+
 button {
     padding: 6px 10px;
     background-color: rgba(172, 59, 97,1);
@@ -265,6 +267,12 @@ section {
 	text-align: center;
 }
 
+.inline-container {
+	display: flexbox;
+	padding-top: 20px;
+	text-align: center;
+}
+
 .center {
 	display: grid;
 	place-items: center;
@@ -276,28 +284,42 @@ section {
 	padding-top: 51px;
 }
 
+/* TABLES  */
+
 table, th, td {
   border: 1px solid black;
 }
-td {
-	padding: 10px 10px;
+td,th {
+	padding: 10px 20px;
 }
 
-form {
+th {
+	background-color: gray;
+}
+
+/* FORMS  */
+
+.form-grid {
 	display: grid;
 	place-items: center;
 	align-content: center;
 	margin-top: -10vh;
 }
 
-form p label, input {
+.form-grid p label, input {
 	display: flex;
 	flex-direction:column;
 }
 
-form p label {
+.form-grid p label {
 	text-align:center;
 	line-height: 150%;
+}
+
+.form-grid p input {
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
 }
 
 .btn-form {
@@ -306,6 +328,61 @@ form p label {
 
 .form-element {
 	width: 100%
+}
+
+.form-inline {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.form-inline p label, input {
+	display: inline-flex;
+	flex-direction: row;
+}
+
+.form-inline p input {
+  margin: 5px 10px 5px 0;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.form-inline p label {
+	text-align:center;
+  margin: 5px 10px 5px 0;
+}
+
+.form-inline p button {
+	position: relative;
+}
+
+
+@media screen and (max-width: 600px) {
+  .form-inline input {
+    margin: 10px 0;
+  }
+
+  .form-inline {
+    flex-direction: column;
+	flex-wrap: nowrap;
+    align-items: stretch;
+  }
+
+	.form-inline p label, input {
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+.break {
+	flex-basis: 100%;
+  height: 0;
+}
+
+.break-column {
+  flex-basis: 100%;
+  width: 0;
 }
 
 

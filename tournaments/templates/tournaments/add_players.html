@@ -5,7 +5,7 @@
 	<h1>Add New Bracket</h1>
 </div>
 <section>
-	<form action="" method=POST>
+	<form action="" method=POST class="form-grid">
 		{% csrf_token %}
 		{{form.as_p}}
 		<button type="submit" class="btn-form" >Sumbit</button>
