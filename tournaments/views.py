@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 
 from .models import Bracket, Player
-from .forms import BracketForm
+from .forms import BracketForm, PlayersForm
 # Create your views here.
 
 
@@ -38,3 +38,20 @@ def add_bracket(response):
             submitted = True
     context = {'form': form, 'submitted': submitted}
     return render(response, 'tournaments/add_bracket.html', context)
+
+def add_players(response, id):
+    br = Bracket.objects.get(pk=id)
+    if response.method == 'POST':
+        form = PlayersForm(response.POST, instance=br)
+        if form.is_valid():
+            player = form.save()
+            # link contact to activity here, activity pk is 'id'
+
+            # player.bracket.add(br)
+
+            return HttpResponseRedirect('/brackets/table/'+str(id)+'/add')
+    else:
+        form = PlayersForm
+    context = {'form': form}
+    return render(response, 'tournaments/add_players.html', context)
+

@@ -27,6 +27,8 @@ class Player(models.Model):
     )
     bracket = models.ForeignKey(
         Bracket,
+        null=True,
+        blank=True,
         on_delete=models.CASCADE,
     )  # many to one relation
 

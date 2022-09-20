@@ -12,3 +12,8 @@ class BracketForm(ModelForm):
             'size': forms.NumberInput(attrs={'class': 'form-element'}),
             'date': forms.DateInput(attrs={'class': 'form-element'}),
         }
+
+class PlayersForm(ModelForm):
+    class Meta:
+        model = Player
+        fields = ('name', 'last_name', 'age', 'rating', 'score')
