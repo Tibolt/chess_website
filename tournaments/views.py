@@ -24,9 +24,24 @@ def brackets_list(response):
 def bracket(response, id):
     bracket = get_object_or_404(Bracket, pk=id)
     players = Player.objects.filter(bracket=id).all()
+
+    response.session['sorting'] = response.GET.get('sort')
+    field_names = [f.name for f in Player._meta.get_fields()]
+    field_names_desc = ['-' + f.name for f in Player._meta.get_fields()]
+
+    match response.session['sorting']:
+        case x:
+            if x in field_names:
+                players = players.order_by(str(x))
+            elif x in field_names_desc:
+                players = players.order_by(str(x))
+            else:
+                players = players.order_by('pk')
+
     context = {
         'bracket': bracket,
         'players': players,
+        'response': response,
     }
     return render(response, 'tournaments/bracket.html', context)
 
