@@ -25,7 +25,11 @@ def bracket(response, id):
     bracket = get_object_or_404(Bracket, pk=id)
     players = Player.objects.filter(bracket=id).all()
 
-    response.session['sorting'] = response.GET.get('sort')
+    # persist sorting session variable
+    if response.GET.get('sort'):
+        response.session['sorting'] = response.GET.get('sort')
+    else:
+        response.session['sorting']
     field_names = [f.name for f in Player._meta.get_fields()]
     field_names_desc = ['-' + f.name for f in Player._meta.get_fields()]
 
