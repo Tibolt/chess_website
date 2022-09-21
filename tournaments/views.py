@@ -13,7 +13,12 @@ def index(response):
 
 def brackets_list(response):
     brackets = Bracket.objects.all()
-    return render(response, 'tournaments/brackets_list.html', {'brackets': brackets})
+    size = []
+    for x in brackets:
+        size.append(Player.objects.filter(bracket=x).count())
+
+    br = zip(brackets, size)
+    return render(response, 'tournaments/brackets_list.html', {'brackets': br})
 
 
 def bracket(response, id):
