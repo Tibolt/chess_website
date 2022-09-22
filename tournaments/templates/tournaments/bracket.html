@@ -30,6 +30,7 @@
 	<div class="inline-container">
 		<a class="button btn-form" href="{% url 'tournaments:add_players' id=bracket.id %}">Add</a>
 		<a class="button btn-form" href="{% url 'tournaments:edit_players' id=bracket.id %}">Edit</a>
+		<a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=0 %}">Rounds</a>
 	</div>
 </section>
 

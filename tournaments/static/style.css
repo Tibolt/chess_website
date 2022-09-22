@@ -257,6 +257,11 @@ section {
 	min-height: 100vh;
 }
 
+.inline-section {
+	display: flex;
+	justify-content: center;
+}
+
 
 .grid-container {
 	display: grid;

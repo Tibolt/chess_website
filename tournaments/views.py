@@ -25,6 +25,7 @@ def bracket(response, id):
     bracket = get_object_or_404(Bracket, pk=id)
     players = Player.objects.filter(bracket=id).all()
 
+    response.session['sorting'] = ""
     # persist sorting session variable
     if response.GET.get('sort'):
         response.session['sorting'] = response.GET.get('sort')
@@ -95,3 +96,22 @@ def edit_players(response, id):
     context = {'form': formset}
     return render(response, 'tournaments/edit_players.html', context)
 
+
+def rounds(response, id, round):
+    bracket = get_object_or_404(Bracket, pk=id)
+    players = Player.objects.filter(bracket=id).all()
+
+    first_half = players.order_by("-rating")[:len(players) / 2]
+    second_half = players.order_by("-rating")[len(players) / 2:len(players)]
+
+    if round > 0:
+        first_half = players.order_by("-score")[:len(players) / 2]
+        second_half = players.order_by("-score")[len(players) / 2:len(players)]
+
+    context = {
+        'first_half': first_half,
+        'second_half': second_half,
+        'bracket': bracket,
+        'rd': round,
+    }
+    return render(response, 'tournaments/rounds.html', context)
