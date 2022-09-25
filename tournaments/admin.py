@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Player, Bracket
+from .models import Player, Bracket, Rounds
 
 # Register your models here.
 
@@ -17,3 +17,4 @@ class BracketAdmin(admin.ModelAdmin):
 
 admin.site.register(Bracket, BracketAdmin)
 admin.site.register(Player)
+admin.site.register(Rounds)

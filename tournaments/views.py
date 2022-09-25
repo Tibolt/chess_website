@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.forms import inlineformset_factory
 
-from .models import Bracket, Player
+from .models import Bracket, Player, Rounds
 from .forms import BracketForm, PlayersForm
 # Create your views here.
 
@@ -101,12 +101,22 @@ def rounds(response, id, round):
     bracket = get_object_or_404(Bracket, pk=id)
     players = Player.objects.filter(bracket=id).all()
 
-    first_half = players.order_by("-rating")[:len(players) / 2]
-    second_half = players.order_by("-rating")[len(players) / 2:len(players)]
-
     if round > 0:
         first_half = players.order_by("-score")[:len(players) / 2]
         second_half = players.order_by("-score")[len(players) / 2:len(players)]
+    else:
+        first_half = players.order_by("-rating")[:len(players) / 2]
+        second_half = players.order_by("-rating")[len(players) / 2:len(players)]
+
+    match_history = {}
+    # save history to db
+    if response.method == 'POST':
+        for index, p1 in enumerate(first_half):
+            match_history[p1] = second_half[index]
+            rd = Rounds.objects.create(bracket=bracket, round=round,
+                                       player1_id=p1.pk, player2_id=second_half[index].pk)
+            rd.save()
+        return HttpResponseRedirect('/brackets/table/' + str(id) + "/rounds/" + str(round))
 
     context = {
         'first_half': first_half,
@@ -115,3 +125,30 @@ def rounds(response, id, round):
         'rd': round,
     }
     return render(response, 'tournaments/rounds.html', context)
+
+
+def edit_rounds(response, id, round):
+    bracket = get_object_or_404(Bracket, pk=id)
+    rounds = Rounds.objects.filter(bracket=bracket).all()
+    players1 = Player.objects.filter(id__in=rounds.values('player1_id'))
+    players2 = Player.objects.filter(id__in=rounds.values('player2_id'))
+
+    if response.method == 'POST':
+        for player in players1:
+            if(response.POST.get("p1" + str(player.pk))) != '':
+                player.score += int(response.POST.get("p1" + str(player.pk)))
+                player.save()
+
+        for player in players2:
+            if(response.POST.get("p2" + str(player.pk))) != '':
+                player.score += int(response.POST.get("p2" + str(player.pk)))
+                player.save()
+
+    context = {
+        'rounds': rounds,
+        'bracket': bracket,
+        'rd': round,
+        'players1': players1,
+        'players2': players2,
+    }
+    return render(response, 'tournaments/edit_rounds.html', context)

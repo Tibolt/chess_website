@@ -34,3 +34,16 @@ class Player(models.Model):
 
     def __str__(self):
         return str(self.name) + " " + str(self.last_name)
+
+
+class Rounds(models.Model):
+    round = models.PositiveIntegerField()
+    player1_id = models.PositiveIntegerField(null=True, blank=True)
+    player2_id = models.PositiveIntegerField(null=True, blank=True)
+    bracket = models.ForeignKey(
+        Bracket,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+    )
+
