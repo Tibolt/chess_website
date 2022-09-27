@@ -113,9 +113,9 @@ def rounds(response, id, round):
     if response.method == 'POST':
         for index, p1 in enumerate(first_half):
             match_history[p1] = second_half[index]
-            rd = Rounds.objects.create(bracket=bracket, round=round,
+            rd = Rounds.objects.update_or_create(bracket=bracket, round=round,
                                        player1_id=p1.pk, player2_id=second_half[index].pk)
-            rd.save()
+            # rd.save()
         return HttpResponseRedirect('/brackets/table/' + str(id) + "/rounds/" + str(round))
 
     context = {
