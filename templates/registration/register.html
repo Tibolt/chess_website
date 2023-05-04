@@ -1,0 +1,13 @@
+{% extends 'tournaments/base.html' %}
+{% block content %}
+    <section>
+        <div class="center">
+            <h2>Sign Up</h2>
+            <form method="post" class="form-grid form-login">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </section>
+{% endblock content %}

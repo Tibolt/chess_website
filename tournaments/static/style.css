@@ -290,9 +290,15 @@ section {
 
 .center {
 	display: grid;
-	place-items: center;
-	align-content: center;
+	justify-content: center;
+	align-items: center;
 	margin-top: 5vh;
+}
+
+.centerFlex {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .spacer {
@@ -370,6 +376,12 @@ th {
 
 .form-inline p button {
 	position: relative;
+}
+
+.form-grid,
+.form-login p input{
+	padding: 5px;
+	background-color: #000000;
 }
 
 
