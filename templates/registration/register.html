@@ -2,10 +2,19 @@
 {% block content %}
     <section>
         <div class="center">
-            <h2>Sign Up</h2>
-            <form method="post" class="form-grid form-login">
+            <form method="post" class="form-grid">
+                <h2>Sign Up</h2>
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ form.non_field_errors }}
+
+                {{ form.source.errors }}
+                {{ form.source }}
+                <p>{{ form.first_name}} {{form.last_name}} {{form.first_name.label_tag}}</p>
+                <p>{{ form.email.label_tag }}</p>
+                <p>
+                    {{ form.email.errors }}
+                    {{ form.email }}</p>
+
                 <button type="submit">Sign Up</button>
             </form>
         </div>

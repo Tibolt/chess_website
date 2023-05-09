@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.forms import inlineformset_factory
+from django.contrib.auth.decorators import permission_required
 
 from .models import Bracket, Player, Rounds
 from .forms import BracketForm, PlayersForm
+
 # Create your views here.
 
 
@@ -21,6 +23,7 @@ def brackets_list(response):
     return render(response, 'tournaments/brackets_list.html', {'brackets': br})
 
 
+@permission_required('tournaments.moderator')
 def bracket(response, id):
     bracket = get_object_or_404(Bracket, pk=id)
     players = Player.objects.filter(bracket=id).all()
@@ -50,7 +53,7 @@ def bracket(response, id):
     }
     return render(response, 'tournaments/bracket.html', context)
 
-
+@permission_required('tournaments.moderator')
 def add_bracket(response):
     submitted = False
     if response.method == 'POST':
@@ -66,6 +69,7 @@ def add_bracket(response):
     return render(response, 'tournaments/add_bracket.html', context)
 
 
+@permission_required('tournaments.moderator')
 def add_players(response, id):
     bracket = Bracket.objects.get(pk=id)
     if response.method == "POST":
@@ -82,6 +86,7 @@ def add_players(response, id):
     return render(response, 'tournaments/add_players.html', context)
 
 
+@permission_required('tournaments.moderator')
 def edit_players(response, id):
     bracket = Bracket.objects.get(pk=id)
     PlayerInlineFormSet = inlineformset_factory(
@@ -133,6 +138,7 @@ def rounds(response, id, round):
     return render(response, 'tournaments/rounds.html', context)
 
 
+@permission_required('tournaments.moderator')
 def edit_rounds(response, id, round):
     bracket = get_object_or_404(Bracket, pk=id)
     rounds = Rounds.objects.filter(bracket=bracket).filter(round=round).all()

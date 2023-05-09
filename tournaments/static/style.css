@@ -66,6 +66,7 @@ header {
   margin-inline: auto;
 }
 
+
 nav {
 	position: absolute;
 	text-align: left;
@@ -170,7 +171,7 @@ nav a:hover {
 		grid-template-columns: 1fr auto minmax(600px, 5fr) 1fr;
 	}
 
-	.logo {
+	.lego {
 		grid-column: 2 / 3;
 	}
 
@@ -240,11 +241,33 @@ button:hover {
 	border-radius: 30px;
 	cursor: pointer;
 	transition: all 0.3s ease 0s;
+	text-align: center;
 }
 
 .button:hover {
     background-color: rgba(172, 59, 97,0.5);
 }
+
+.logout {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin-right: 8em;
+	margin-top: 0.8em;
+	font-weight: bold;
+	font-size: 1.2rem;
+}
+
+.logout-btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin-right: 9em;
+	margin-top: 0.4em;
+	font-weight: bold;
+	font-size: 1.2rem;
+}
+
 
 footer {
 	position: fixed;
@@ -325,9 +348,10 @@ th {
 	place-items: center;
 	align-content: center;
 	margin-top: -10vh;
+	position: relative;
 }
 
-.form-grid p label, input {
+.form-grid p label, input, span {
 	display: flex;
 	flex-direction:column;
 }
@@ -336,11 +360,22 @@ th {
 	text-align:center;
 	line-height: 150%;
 }
+.form-grid p span {
+	position: absolute;
+	left: 1em;
+	font-size: 12px;
+	line-height: 1;
+	text-align: center;
+}
 
 .form-grid p input {
   padding: 10px;
   background-color: #fff;
   border: 1px solid #ddd;
+}
+
+.form-grid button {
+	margin-top: 4vh;
 }
 
 .btn-form {
@@ -376,12 +411,6 @@ th {
 
 .form-inline p button {
 	position: relative;
-}
-
-.form-grid,
-.form-login p input{
-	padding: 5px;
-	background-color: #000000;
 }
 
 

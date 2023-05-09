@@ -2,13 +2,13 @@
 {% block content %}
     <section >
         <div class="center">
-            <h2>Log In</h2>
-            <form method="post">
+            <form method="post" class="form-grid">
+                <h1>Log In</h1>
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit">Log In</button>
             </form>
-            <div class="center">Don't have an account? <a class="button" href="{% url 'login:register' %}">Sign up</a></div>
         </div>
+        <div class="center">Don't have an account? <a class="button" href="{% url 'login:register' %}">Sign up</a></div>
     </section>
 {% endblock content %}
