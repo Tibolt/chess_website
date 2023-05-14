@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.forms import inlineformset_factory
@@ -23,7 +24,6 @@ def brackets_list(response):
     return render(response, 'tournaments/brackets_list.html', {'brackets': br})
 
 
-@permission_required('tournaments.moderator')
 def bracket(response, id):
     bracket = get_object_or_404(Bracket, pk=id)
     players = Player.objects.filter(bracket=id).all()
@@ -45,7 +45,6 @@ def bracket(response, id):
                 players = players.order_by(str(x))
             else:
                 players = players.order_by('pk')
-
     context = {
         'bracket': bracket,
         'players': players,
@@ -155,17 +154,22 @@ def edit_rounds(response, id, round):
     if response.method == 'POST':
         for player in players1:
             if(response.POST.get("p1" + str(player.pk))) != '':
+                rounds.filter(player1_id=player.pk).update(player1_score=int(response.POST.get("p1" + str(player.pk))))
+                player.score = rounds.filter(player1_id=player.pk).aggregate(Sum('player1_score'))['player1_score__sum']
                 player.score_round = 0
-                player.score += int(response.POST.get("p1" + str(player.pk)))
+                # player.score += int(response.POST.get("p1" + str(player.pk)))
                 player.score_round = int(response.POST.get("p1" + str(player.pk)))
                 player.save()
 
         for player in players2:
             if(response.POST.get("p2" + str(player.pk))) != '':
+                rounds.filter(player2_id=player.pk).update(player2_score=int(response.POST.get("p2" + str(player.pk))))
+                player.score = rounds.filter(player2_id=player.pk).aggregate(Sum('player2_score'))['player2_score__sum']
                 player.score_round = 0
-                player.score += int(response.POST.get("p2" + str(player.pk)))
+                # player.score += int(response.POST.get("p2" + str(player.pk)))
                 player.score_round = int(response.POST.get("p2" + str(player.pk)))
                 player.save()
+        return HttpResponseRedirect('/brackets/table/' + str(id) + "/rounds/" + str(round))
 
     context = {
         'rounds': rounds,

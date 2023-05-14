@@ -19,9 +19,7 @@
 				<td> {{len}}</td>
 				<td> {{bracket.date}}</td>
 				<td>
-					{% if perms.tournament.moderator %}
-					<a class="button" href="{% url 'tournaments:bracket' id=bracket.id %}">Edit</a>
-					{% endif %}
+					<a class="button" href="{% url 'tournaments:bracket' id=bracket.id %}">Start List</a>
 					<a class="button" href="{% url 'tournaments:rounds' id=bracket.id round=0%}">Rounds</a></td>
 				{% endfor %}
 			</tr>
