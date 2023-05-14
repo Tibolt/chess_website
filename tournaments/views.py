@@ -28,6 +28,8 @@ def bracket(response, id):
     bracket = get_object_or_404(Bracket, pk=id)
     players = Player.objects.filter(bracket=id).all()
 
+    refresh_score(id)
+
     response.session['sorting'] = ""
     # persist sorting session variable
     if response.GET.get('sort'):
@@ -105,28 +107,18 @@ def rounds(response, id, round):
     bracket = get_object_or_404(Bracket, pk=id)
     players = Player.objects.filter(bracket=id).all()
     rounds = Rounds.objects.filter(bracket=id).filter(round=round).all()
-    
-    if rounds.exists():
-        first_half = Player.objects.filter(id__in=rounds.values('player1_id')).order_by("-rating")
-        second_half = Player.objects.filter(id__in=rounds.values('player2_id')).order_by("-rating")
 
+    refresh_round_score(id, round)
+
+    # if round in rounds table get score from rounds table for each half of players and sort them by rating if round is 0 or score if round is > 0
+    if round > 0:
+        players = players.order_by("-score")
     else:
-        if round > 0:
-            first_half = players.order_by("-score")[:len(players) / 2]
-            second_half = players.order_by("-score")[len(players) / 2:len(players)]
-        else:
-            first_half = players.order_by("-rating")[:len(players) / 2]
-            second_half = players.order_by("-rating")[len(players) / 2:len(players)]
+        players = players.order_by("-rating")
 
-        match_history = {}
-        # save history to db
-        if response.method == 'POST':
-            for index, p1 in enumerate(first_half):
-                match_history[p1] = second_half[index]
-                rd, new_rd = Rounds.objects.update_or_create(bracket=bracket, round=round,
-                                           player1_id=p1.pk, player2_id=second_half[index].pk, player1_score=p1.score_round, player2_score=second_half[index].score_round)
-                rd.save()
-            return HttpResponseRedirect('/brackets/table/' + str(id) + "/rounds/" + str(round))
+    # split players into two halves for each round
+    first_half = players[:len(players)//2]
+    second_half = players[len(players)//2:]
 
     context = {
         'first_half': first_half,
@@ -144,30 +136,19 @@ def edit_rounds(response, id, round):
     players1 = Player.objects.filter(id__in=rounds.values('player1_id')).order_by("-rating")
     players2 = Player.objects.filter(id__in=rounds.values('player2_id')).order_by("-rating")
 
-    # if round > 0:
-    #     players1 = players1.order_by("-score", "rating")
-    #     players2 = players2.order_by("-score", "rating")
-    # else:
-    #     players1 = players1.order_by("-rating")
-    #     players2 = players2.order_by("-rating")
-
     if response.method == 'POST':
         for player in players1:
             if(response.POST.get("p1" + str(player.pk))) != '':
                 rounds.filter(player1_id=player.pk).update(player1_score=int(response.POST.get("p1" + str(player.pk))))
                 player.score = rounds.filter(player1_id=player.pk).aggregate(Sum('player1_score'))['player1_score__sum']
-                player.score_round = 0
-                # player.score += int(response.POST.get("p1" + str(player.pk)))
-                player.score_round = int(response.POST.get("p1" + str(player.pk)))
+                player.score_round = rounds.filter(player1_id=player.pk).get().player1_score
                 player.save()
 
         for player in players2:
             if(response.POST.get("p2" + str(player.pk))) != '':
                 rounds.filter(player2_id=player.pk).update(player2_score=int(response.POST.get("p2" + str(player.pk))))
                 player.score = rounds.filter(player2_id=player.pk).aggregate(Sum('player2_score'))['player2_score__sum']
-                player.score_round = 0
-                # player.score += int(response.POST.get("p2" + str(player.pk)))
-                player.score_round = int(response.POST.get("p2" + str(player.pk)))
+                player.score_round = rounds.filter(player2_id=player.pk).get().player2_score
                 player.save()
         return HttpResponseRedirect('/brackets/table/' + str(id) + "/rounds/" + str(round))
 
@@ -179,3 +160,30 @@ def edit_rounds(response, id, round):
         'players2': players2,
     }
     return render(response, 'tournaments/edit_rounds.html', context)
+
+def refresh_round_score(bracket_id, round_id):
+    bracket = get_object_or_404(Bracket, pk=bracket_id)
+    round = Rounds.objects.filter(bracket=bracket).filter(round=round_id).all()
+    players = Player.objects.filter(bracket=bracket).all()
+    for player in players:
+        s1, s2 = 0, 0
+        if round.filter(player1_id=player.pk).first() is not None:
+            s1 = round.filter(player1_id=player.pk).first().player1_score or 0
+        if round.filter(player2_id=player.pk).first() is not None:
+            s2 = round.filter(player2_id=player.pk).first().player2_score or 0
+        player.score_round = s1 + s2
+        player.save()
+
+
+def refresh_score(bracket_id):
+    bracket = get_object_or_404(Bracket, pk=bracket_id)
+    rounds = Rounds.objects.filter(bracket=bracket).all()
+    players = Player.objects.filter(bracket=bracket).all()
+    for player in players:
+        s1 = rounds.filter(player1_id=player.pk).aggregate(Sum('player1_score')).get('player1_score__sum') or 0
+        s2 = rounds.filter(player2_id=player.pk).aggregate(Sum('player2_score')).get('player2_score__sum') or 0
+        player.score = s1 + s2
+        player.save()
+
+
+
