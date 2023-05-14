@@ -18,8 +18,11 @@
 				<td scope="row"> {{bracket.name}}</td>
 				<td> {{len}}</td>
 				<td> {{bracket.date}}</td>
-				<td><a class="button" href="{% url 'tournaments:bracket' id=bracket.id %}">Edit</a>
-				<a class="button" href="{% url 'tournaments:rounds' id=bracket.id round=0%}">Rounds</a></td>
+				<td>
+					{% if perms.tournament.moderator %}
+					<a class="button" href="{% url 'tournaments:bracket' id=bracket.id %}">Edit</a>
+					{% endif %}
+					<a class="button" href="{% url 'tournaments:rounds' id=bracket.id round=0%}">Rounds</a></td>
 				{% endfor %}
 			</tr>
 			{% else %}
@@ -27,7 +30,9 @@
 			{% endif %}
 		</tbody>
 	</table>
+	{% if perms.tournament.moderator %}
 	<a class="button btn-form" href="{% url 'tournaments:add_bracket' %}">Add</a>
+	{% endif %}
 </section>
 
 {% endblock content %}

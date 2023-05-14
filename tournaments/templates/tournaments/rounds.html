@@ -3,6 +3,7 @@
 {% load tags %}
 
 <section>
+	<h2>Round: {{ rd }}</h2>
 	<div class="form-inline">
 		<table>
 			<thead>
@@ -51,15 +52,17 @@
 		<a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=0 %}">0</a>
 		<a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=1%}">1</a>
 		<a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=2%}">2</a>
+		{% if perms.tournament.moderator %}
 		<a class="button btn-form" href="{% url 'tournaments:edit_rounds' id=bracket.id round=rd%}">update score</a>
+		{% endif %}
 	</div>
 	<div class="break"></div>
-	<div>
-		<form action="" method=POST>
-			{% csrf_token %}
-			<button class="btn-form" type="submit">save db</button>
-		</form>
-	</div>
+<!--	<div>-->
+<!--		<form action="" method=POST>-->
+<!--			{% csrf_token %}-->
+<!--			<button class="btn-form" type="submit">save db</button>-->
+<!--		</form>-->
+<!--	</div>-->
 </section>
 
 {% endblock content %}

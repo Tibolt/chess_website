@@ -133,7 +133,7 @@ def rounds(response, id, round):
         'first_half': first_half,
         'second_half': second_half,
         'bracket': bracket,
-        'rd': round,
+        'rd': str(round),
     }
     return render(response, 'tournaments/rounds.html', context)
 

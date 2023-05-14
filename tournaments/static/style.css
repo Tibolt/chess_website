@@ -288,6 +288,9 @@ section {
 .text {
   width: min(100% - 100px, 1800px);
   margin-inline: auto;
+	padding-left: 200px;
+	padding-right: 200px;
+	text-align: center;
 }
 
 .inline-section {
@@ -379,7 +382,7 @@ th {
 }
 
 .btn-form {
-	margin-top: 2vh;
+	margin-right: 1em;
 }
 
 .form-element {
