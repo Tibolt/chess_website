@@ -3,13 +3,13 @@
 {% load tags %}
 
 <section>
+	<h2>Round: {{ rd }}</h2>
 	<div class="form-inline">
 		<table>
 			<thead>
 				<tr>
 					<th><a href="/brackets/table/{{bracket.id}}?sort=name">Name</a></th>
 					<th><a href="/brackets/table/{{bracket.id}}?sort=last_name">Last name</a></th>
-					<th><a href="/brackets/table/{{bracket.id}}?sort=age">Age</a></th>
 					<th><a href="/brackets/table/{{bracket.id}}?sort=rating">Rating</a></th>
 					<th><a href="/brackets/table/{{bracket.id}}?sort=score">Score</a></th>
 				</tr>
@@ -18,7 +18,6 @@
 				{% for player in first_half %} <tr>
 					<td scope="row"> {{player.name}}</td>
 					<td> {{player.last_name}}</td>
-					<td> {{player.age}}</td>
 					<td> {{player.rating}}</td>
 					<td> {{player.score_round}}</td>
 					{% endfor %}
@@ -30,7 +29,6 @@
 				<tr>
 					<th><a href="/brackets/table/{{bracket.id}}?sort=score">Score</a></th>
 					<th><a href="/brackets/table/{{bracket.id}}?sort=rating">Rating</a></th>
-					<th><a href="/brackets/table/{{bracket.id}}?sort=age">Age</a></th>
 					<th><a href="/brackets/table/{{bracket.id}}?sort=last_name">Last name</a></th>
 					<th><a href="/brackets/table/{{bracket.id}}?sort=name">Name</a></th>
 				</tr>
@@ -39,7 +37,6 @@
 				{% for player in second_half %} <tr>
 					<td scope="row"> {{player.score_round}}</td>
 					<td> {{player.rating}}</td>
-					<td> {{player.age}}</td>
 					<td> {{player.last_name}}</td>
 					<td> {{player.name}}</td>
 					{% endfor %}
@@ -51,15 +48,17 @@
 		<a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=0 %}">0</a>
 		<a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=1%}">1</a>
 		<a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=2%}">2</a>
+		{% if perms.tournament.moderator %}
 		<a class="button btn-form" href="{% url 'tournaments:edit_rounds' id=bracket.id round=rd%}">update score</a>
+		{% endif %}
 	</div>
-	<div class="break"></div>
-	<div>
-		<form action="" method=POST>
-			{% csrf_token %}
-			<button class="btn-form" type="submit">save db</button>
-		</form>
-	</div>
+<!--	<div class="break"></div>-->
+<!--	<div>-->
+<!--		<form action="" method=POST>-->
+<!--			{% csrf_token %}-->
+<!--			<button class="btn-form" type="submit">save db</button>-->
+<!--		</form>-->
+<!--	</div>-->
 </section>
 
 {% endblock content %}

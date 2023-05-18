@@ -49,6 +49,8 @@
 				</tbody>
 			</table>
 			<div class="break"></div>
+				<input type="checkbox" name="finished" id="finished">
+				<label for="finished">Round was finished</label>
 			<div class="inline-container">
 				<button class="btn-form" type="submit">submit</button>
 				<a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=rd%}">back</a>
