@@ -17,15 +17,15 @@
 		<nav class="text-nav">
 			<ul>
 				<li><a href="{% url 'tournaments:index' %}">HOME</a></li>
-				<li><a href="{% url 'tournaments:brackets' %}">BRACKETS</a></li>
+				<li><a href="{% url 'tournaments:brackets' %}">TOURNAMENTS</a></li>
 				<li><a href="#">SHOW</a></li>
+				{% if user.is_authenticated %}
+				  <li><a class="nav-logout" href="{% url 'login:logout' %}">Hello {{user.username}}</a></li>
+				{% else %}
+				  <li><a class="nav-btn" href="{% url 'login:login' %}">LOGIN</a></li>
+				{% endif %}
 			</ul>
 		</nav>
-		{% if user.is_authenticated %}
-			<a class="logout" href="{% url 'login:logout' %}">Hello {{user.username}}</a>
-		{% else %}
-			<a class="button logout-btn" href="{% url 'login:login' %}">LOGIN</a>
-		{% endif %}
 		<label for="nav-toggle" class="nav-toggle-label">
 			<span></span>
 		</label>

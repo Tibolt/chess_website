@@ -61,6 +61,9 @@ def add_bracket(response):
         form = BracketForm(response.POST)
         if form.is_valid():
             form.save()
+            bracket_id = Bracket.objects.latest('id').id
+            nuber_of_rounds = Bracket.objects.latest('id').numberOfRounds
+            create_rounds(bracket_id, nuber_of_rounds)
             return HttpResponseRedirect('/brackets/add?submitted=True')
     else:
         form = BracketForm
@@ -150,6 +153,22 @@ def edit_rounds(response, id, round):
                 player.score = rounds.filter(player2_id=player.pk).aggregate(Sum('player2_score'))['player2_score__sum']
                 player.score_round = rounds.filter(player2_id=player.pk).get().player2_score
                 player.save()
+
+        # if round is mark as Finished call add_players_to_round function
+        if response.POST.get("finished") == 'on':
+            print("finised")
+            # set round as finished
+            rd = Rounds.objects.filter(bracket=bracket).filter(round=round)
+            print(rd)
+            for r in rd:
+                print(r.id, r.isFinished)
+                r.isFinished = True
+                print(r.id, r.isFinished)
+                r.save()
+            if round+1 in rounds.values('round') and rounds.last().isFinished == True:
+                print("debug add players")
+                add_players_to_round(id, round+1, players1, players2)
+
         return HttpResponseRedirect('/brackets/table/' + str(id) + "/rounds/" + str(round))
 
     context = {
@@ -184,6 +203,22 @@ def refresh_score(bracket_id):
         s2 = rounds.filter(player2_id=player.pk).aggregate(Sum('player2_score')).get('player2_score__sum') or 0
         player.score = s1 + s2
         player.save()
+
+def create_rounds(bracket_id, nuber_of_rounds):
+    bracket = get_object_or_404(Bracket, pk=bracket_id)
+    for i in range(1, nuber_of_rounds + 1):
+        round = Rounds.objects.update_or_create(bracket=bracket, round=i)
+        round.save()
+
+
+def add_players_to_round(bracket_id, round_id, player1_id, player2_id):
+    bracket = get_object_or_404(Bracket, pk=bracket_id)
+    round = get_object_or_404(Rounds, bracket=bracket, round=round_id)
+    player1 = get_object_or_404(Player, pk=player1_id)
+    player2 = get_object_or_404(Player, pk=player2_id)
+    round.player1 = player1
+    round.player2 = player2
+    round.save()
 
 
 

@@ -10,6 +10,7 @@ class Bracket(models.Model):
         null=True,
         blank=True
     )
+    numberOfRounds = models.PositiveIntegerField(default=1)
 
 
 class Player(models.Model):
@@ -51,4 +52,5 @@ class Rounds(models.Model):
         blank=True,
         on_delete=models.CASCADE,
     )
+    isFinished = models.BooleanField(default=False)
 
