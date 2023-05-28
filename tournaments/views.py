@@ -113,21 +113,25 @@ def rounds(response, id, round):
 
     refresh_round_score(id, round)
 
-    # if round in rounds table get score from rounds table for each half of players and sort them by rating if round is 0 or score if round is > 0
-    if round > 0:
-        players = players.order_by("-score")
+    # # if round in rounds table get score from rounds table for each half of players and sort them by rating if round is 0 or score if round is > 0
+    if round > 1:
+        first_half = players.filter(id__in=rounds.values('player1_id'))
+        second_half = players.filter(id__in=rounds.values('player2_id'))
     else:
         players = players.order_by("-rating")
+        first_half = players[:len(players)//2]
+        second_half = players[len(players)//2:]
 
-    # split players into two halves for each round
-    first_half = players[:len(players)//2]
-    second_half = players[len(players)//2:]
+    
+    # first_half, second_half = sort_players(id, round)
+
 
     context = {
         'first_half': first_half,
         'second_half': second_half,
         'bracket': bracket,
         'rd': str(round),
+        'rounds_number': range(1,bracket.numberOfRounds+1)
     }
     return render(response, 'tournaments/rounds.html', context)
 
@@ -136,8 +140,17 @@ def rounds(response, id, round):
 def edit_rounds(response, id, round):
     bracket = get_object_or_404(Bracket, pk=id)
     rounds = Rounds.objects.filter(bracket=bracket).filter(round=round).all()
+
+
+    # create_rounds(id, bracket.numberOfRounds)
+    first_half, second_half = sort_players(id, round)
+    for p1, p2 in zip(first_half, second_half):
+        create_round_and_add_players(id, round, p1.id, p2.id)
+
     players1 = Player.objects.filter(id__in=rounds.values('player1_id')).order_by("-rating")
     players2 = Player.objects.filter(id__in=rounds.values('player2_id')).order_by("-rating")
+
+    
 
     if response.method == 'POST':
         for player in players1:
@@ -167,7 +180,7 @@ def edit_rounds(response, id, round):
                 r.save()
             if round+1 in rounds.values('round') and rounds.last().isFinished == True:
                 print("debug add players")
-                add_players_to_round(id, round+1, players1, players2)
+                # add_players_to_round(id, round+1)
 
         return HttpResponseRedirect('/brackets/table/' + str(id) + "/rounds/" + str(round))
 
@@ -179,6 +192,16 @@ def edit_rounds(response, id, round):
         'players2': players2,
     }
     return render(response, 'tournaments/edit_rounds.html', context)
+
+
+@permission_required('tournaments.moderator')
+def add_round(response, id, round):
+    bracket = get_object_or_404(Bracket, pk=id)
+    
+    bracket.numberOfRounds = bracket.numberOfRounds + 1
+    bracket.save(update_fields=['numberOfRounds'])
+
+    return rounds(response, id, round)
 
 def refresh_round_score(bracket_id, round_id):
     bracket = get_object_or_404(Bracket, pk=bracket_id)
@@ -207,18 +230,37 @@ def refresh_score(bracket_id):
 def create_rounds(bracket_id, nuber_of_rounds):
     bracket = get_object_or_404(Bracket, pk=bracket_id)
     for i in range(1, nuber_of_rounds + 1):
-        round = Rounds.objects.update_or_create(bracket=bracket, round=i)
-        round.save()
+        if Rounds.objects.filter(bracket=bracket, round=i).exists() == False:
+            round = Rounds.objects.create(bracket=bracket, round=i, isFinished=False)
+            round.save()
 
+def add_players_to_round(bracket_id, round_id, player1_id, player2_id, player1_score=0, player2_score=0):
+    round_obj = get_object_or_404(Rounds, pk=round_id)
+    if round_obj.player1_id is None:
+        round_obj.player1_id = player1_id
+        round_obj.player1_score = player1_score
+    if round_obj.player1_id is None:
+        round_obj.player2_id = player2_id
+        round_obj.player2_score = player2_score
+    round_obj.save()
 
-def add_players_to_round(bracket_id, round_id, player1_id, player2_id):
+def create_round_and_add_players(bracket_id, round_number, player1_id, player2_id, player1_score=0, player2_score=0):
     bracket = get_object_or_404(Bracket, pk=bracket_id)
-    round = get_object_or_404(Rounds, bracket=bracket, round=round_id)
-    player1 = get_object_or_404(Player, pk=player1_id)
-    player2 = get_object_or_404(Player, pk=player2_id)
-    round.player1 = player1
-    round.player2 = player2
-    round.save()
+    round_obj, created  = Rounds.objects.get_or_create(bracket=bracket, round=round_number, isFinished=False, player1_id=player1_id, player2_id=player2_id)
+
+    round_obj.save()
 
 
+def sort_players(bracket_id, round):
+    players = Player.objects.filter(bracket=bracket_id).all()
 
+    # if round in rounds table get score from rounds table for each half of players and sort them by rating if round is 0 or score if round is > 0
+    if round > 1:
+        players = players.order_by("-score")
+    else:
+        players = players.order_by("-rating")
+
+    # split players into two halves for each round
+    first_half = players[:len(players)//2]
+    second_half = players[len(players)//2:]
+    return first_half, second_half

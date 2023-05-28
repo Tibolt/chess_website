@@ -45,11 +45,13 @@
 		</table>
 	</div>
 	<div class="inline-container">
-		<a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=0 %}">0</a>
-		<a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=1%}">1</a>
-		<a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=2%}">2</a>
+		<a class="button btn-form" href="{% url 'tournaments:bracket' id=bracket.id %}">back</a>
+	  {% for x in rounds_number %}
+	  <a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=x %}">{{x}}</a>
+	  {% endfor %}
 		{% if perms.tournament.moderator %}
 		<a class="button btn-form" href="{% url 'tournaments:edit_rounds' id=bracket.id round=rd%}">update score</a>
+		<a class="button btn-form" href="{% url 'tournaments:add_round' id=bracket.id round=1 %}">add round</a>
 		{% endif %}
 	</div>
 <!--	<div class="break"></div>-->

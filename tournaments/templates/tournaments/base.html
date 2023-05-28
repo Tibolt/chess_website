@@ -18,8 +18,8 @@
 			<ul>
 				<li><a href="{% url 'tournaments:index' %}">HOME</a></li>
 				<li><a href="{% url 'tournaments:brackets' %}">TOURNAMENTS</a></li>
-				<li><a href="#">SHOW</a></li>
 				{% if user.is_authenticated %}
+				  <li><a href="{% url 'admin:index' %}">MANAGE</a></li>
 				  <li><a class="nav-logout" href="{% url 'login:logout' %}">Hello {{user.username}}</a></li>
 				{% else %}
 				  <li><a class="nav-btn" href="{% url 'login:login' %}">LOGIN</a></li>

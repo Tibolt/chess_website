@@ -20,7 +20,7 @@
 				<td> {{bracket.date}}</td>
 				<td>
 					<a class="button" href="{% url 'tournaments:bracket' id=bracket.id %}">Players List</a>
-					<a class="button" href="{% url 'tournaments:rounds' id=bracket.id round=0%}">Rounds</a></td>
+					<a class="button" href="{% url 'tournaments:rounds' id=bracket.id round=1%}">Rounds</a></td>
 				{% endfor %}
 			</tr>
 			{% else %}
