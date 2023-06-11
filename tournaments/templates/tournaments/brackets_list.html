@@ -28,9 +28,11 @@
 			{% endif %}
 		</tbody>
 	</table>
+	<div class="inline-container">
 	{% if perms.tournament.moderator %}
 	<a class="button btn-form" href="{% url 'tournaments:add_bracket' %}">Add</a>
 	{% endif %}
+	</div>
 </section>
 
 {% endblock content %}

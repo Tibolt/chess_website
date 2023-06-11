@@ -45,7 +45,7 @@
 		</table>
 	</div>
 	<div class="inline-container">
-		<a class="button btn-form" href="{% url 'tournaments:bracket' id=bracket.id %}">back</a>
+		<a class="button btn-form" href="{% url 'tournaments:brackets' %}">back</a>
 	  {% for x in rounds_number %}
 	  <a class="button btn-form" href="{% url 'tournaments:rounds' id=bracket.id round=x %}">{{x}}</a>
 	  {% endfor %}
